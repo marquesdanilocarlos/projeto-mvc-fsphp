@@ -1,0 +1,33 @@
+FROM php:8.3-apache
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    libzip-dev \
+    zip \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev
+
+# Enable mod_rewrite
+RUN a2enmod rewrite
+
+RUN pecl install xdebug
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql zip
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+RUN docker-php-ext-install gd
+RUN docker-php-ext-enable xdebug
+
+ENV APACHE_DOCUMENT_ROOT=/var/www/html
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
+
+ADD ./docker/apache.conf /etc/apache2/sites-enabled/000-default.conf
+
+# Copy the application code
+COPY . /var/www/html
+
+# Set the working directory
+WORKDIR /var/www/html
