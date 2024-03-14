@@ -11,12 +11,12 @@ services:
       - mailcatcher
     restart: always
     volumes:
-      - /var/www/fsphp:/var/www/html/
+      - ${ROOT_DIRECTORY}:/var/www/html/
       - './php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini'
       #- './90-xdebug.ini:/usr/local/etc/php/conf.d/90-xdebug.ini'
     container_name: "${PHP_NAME}"
     ports:
-      - "8000:80"
+      - "80:80"
   mysql:
     image: mysql:${MYSQL_VERSION:-latest}
     restart: always

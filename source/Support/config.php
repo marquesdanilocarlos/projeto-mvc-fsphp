@@ -12,7 +12,7 @@ const CONF_DB_NAME = "mvc-fsphp";
 /**
  * URLs
  */
-const CONF_URL_BASE = "http://www.localhost/fsphp/";
+const CONF_URL_BASE = "http://mvc-fsphp.local";
 const CONF_URL_ADMIN = "/admin";
 const CONF_URL_ERROR = CONF_URL_BASE . "/404";
 
