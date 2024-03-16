@@ -148,10 +148,24 @@ function strLimitChars(string $string, int $limit, string $pointer = '...'): str
  * @param string $path
  * @return string
  */
-function url(string $path): string
+function url(?string $path = null): string
 {
-    $path = $path[0] === '/' ? mb_substr($path, 1) : $path;
-    return CONF_URL_BASE . '/' . $path;
+    $completePath = $path && $path[0] === '/' ? mb_substr($path, 1) : $path;
+
+    if (strpos($_SERVER['HTTP_HOST'], '.local')) {
+        if ($path) {
+            return CONF_URL_TEST . '/' . $completePath;
+        }
+
+        return CONF_URL_TEST;
+    }
+
+    if ($path) {
+        return CONF_URL_BASE . '/' . $completePath;
+    }
+
+    return CONF_URL_BASE;
+
 }
 
 /**
