@@ -13,7 +13,9 @@ class Web extends Controller
 
     public function home()
     {
-        echo '<h1>HOME</h1>';
+        echo $this->view->render('home', [
+            'title' => 'CafeControl - Gerencie suas contas com o melhor café!'
+        ]);
     }
 
     public function about()
@@ -21,8 +23,10 @@ class Web extends Controller
         echo '<h1>SOBRE</h1>';
     }
 
-    public function error(array $data):void
+    public function error(array $data): void
     {
-        echo "<h1>ERROR {$data['errcode']}</h1>";
+        echo $this->view->render('error', [
+            'title' => "{$data['errcode']} | Ooops!"
+        ]);
     }
 }

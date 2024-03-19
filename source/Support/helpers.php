@@ -169,6 +169,33 @@ function url(?string $path = null): string
 }
 
 /**
+ * @param string|null $path
+ * @return string
+ */
+function theme(string $path = null): string
+{
+    $completePath = $path && $path[0] === '/' ? mb_substr($path, 1) : $path;
+
+    if (strpos($_SERVER['HTTP_HOST'], '.local')) {
+        $themeUrl = CONF_URL_TEST . '/themes/' . CONF_VIEW_THEME;
+
+        if ($path) {
+            return "{$themeUrl}/{$completePath}";
+        }
+
+        return $themeUrl;
+    }
+
+    $themeUrl = CONF_URL_BASE . '/themes/' . CONF_VIEW_THEME;
+
+    if ($path) {
+        return "{$themeUrl}/{$completePath}";
+    }
+
+    return $themeUrl;
+}
+
+/**
  * @param string $url
  * @return void
  */
