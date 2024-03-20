@@ -14,7 +14,7 @@
     </div>
 
     <div class="home_featured_app">
-        <img src="assets/images/home-app.jpg" alt="CafeControl" title="CafeControl"/>
+        <img src="<?= theme('/assets/images/home-app.jpg') ?>" alt="CafeControl" title="CafeControl"/>
     </div>
 </article>
 
@@ -29,7 +29,7 @@
         <div class="home_features_content">
             <article class="radius">
                 <header>
-                    <img alt="Contas a receber" title="Contas a receber" src="assets/images/home_receive.jpg"/>
+                    <img alt="Contas a receber" title="Contas a receber" src="<?= theme('assets/images/home_receive.jpg')?>"/>
                     <h3>Contas a receber</h3>
                     <p>Cadastre seus recebíveis, use as automações para salários, contratos e recorrentes e comece a
                         controlar tudo que entra em sua conta. É rápido!</p>
@@ -38,7 +38,7 @@
 
             <article class="radius">
                 <header>
-                    <img alt="Contas a pagar" title="Contas a pagar" src="assets/images/home_pay.jpg"/>
+                    <img alt="Contas a pagar" title="Contas a pagar" src="<?= theme('assets/images/home_pay.jpg')?>"/>
                     <h3>Contas a pagar</h3>
                     <p>Cadastre suas contas a pagar, despesas, use as automações para contas fixas e parcelamentos e
                         controle tudo que sai de sua conta. É simples!</p>
@@ -47,7 +47,7 @@
 
             <article class="radius">
                 <header>
-                    <img alt="Controle e relatórios" title="Controle e relatórios" src="assets/images/home_control.jpg"/>
+                    <img alt="Controle e relatórios" title="Controle e relatórios" src="<?= theme('assets/images/home_control.jpg')?>"/>
                     <h3>Controle e relatórios</h3>
                     <p>Contas e recebíveis cadastrados? Pronto, agora você tem tudo controlado enquanto toma um bom café
                         e acompanha os relatórios. É gratuito!</p>
@@ -113,7 +113,7 @@
         <div class="blog_articles">
             <?php
             for ($i = 0; $i <= 5; $i++):
-                //require __DIR__ . "/article.php";
+                $this->insert('views/blog-post');
             endfor;
             ?>
         </div>

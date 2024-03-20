@@ -94,4 +94,6 @@ const CONF_SOCIAL_TWITTER_PUBLISHER = '@robsonvleite';
 const CONF_SOCIAL_FACEBOOK_APP = '356464859317524';
 const CONF_SOCIAL_FACEBOOK_AUTHOR = 'marquesdanilocarlos';
 const CONF_SOCIAL_FACEBOOK_PAGE = 'marquesdanilocarlos';
+const CONF_SOCIAL_INSTAGRAM_PAGE = 'marquesdanilocarlos';
+const CONF_SOCIAL_YOUTUBE_PAGE = 'marquesdanilocarlos';
 

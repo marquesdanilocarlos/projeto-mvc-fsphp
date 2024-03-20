@@ -17,17 +17,17 @@
 <header class="main_header gradient gradient-green">
     <div class="container">
         <div class="main_header_logo">
-            <h1><a class="icon-coffee transition" title="Home" href="./">Cafe<b>Control</b></a></h1>
+            <h1><a class="icon-coffee transition" title="Home" href="<?= url() ?>">Cafe<b>Control</b></a></h1>
         </div>
 
         <nav class="main_header_nav">
             <span class="main_header_nav_mobile j_menu_mobile_open icon-menu icon-notext radius transition"></span>
             <div class="main_header_nav_links j_menu_mobile_tab">
                 <span class="main_header_nav_mobile_close j_menu_mobile_close icon-error icon-notext transition"></span>
-                <a class="link transition radius active" title="Home" href="./">Home</a>
-                <a class="link transition radius" title="Sobre" href="?file=about">Sobre</a>
-                <a class="link transition radius" title="Blog" href="?file=blog">Blog</a>
-                <a class="link login transition radius icon-sign-in" title="Entrar" href="?file=auth-login">Entrar</a>
+                <a class="link transition radius active" title="Home" href="<?= url() ?>">Home</a>
+                <a class="link transition radius" title="Sobre" href="<?= url('/sobre') ?>">Sobre</a>
+                <a class="link transition radius" title="Blog" href="<?= url('/blog') ?>">Blog</a>
+                <a class="link login transition radius icon-sign-in" title="Entrar" href="<?= url('/login') ?>">Entrar</a>
             </div>
         </nav>
     </div>
@@ -48,7 +48,7 @@ else: ?>
             <span class="icon icon-coffee icon-notext"></span>
             <h2>Comece a controlar suas contas agora mesmo</h2>
             <p>É rápido, simples e gratuito!</p>
-            <a href="?file=auth-register"
+            <a href="<?= url('/cadastro') ?>"
                class="footer_optout_btn gradient gradient-green gradient-hover radius icon-check-square-o">Quero
                 controlar</a>
         </div>
@@ -63,15 +63,15 @@ endif; ?>
                 <h2>Sobre:</h2>
                 <p>O CafeControl é um gerenciador de contas simples, poderoso e gratuito. O prazer de tomar um café e
                     ter o controle total de suas contas.</p>
-                <a title="Termos de uso" href="?file=terms">Termos de uso</a>
+                <a title="Termos de uso" href="<?= url('/termos') ?>">Termos de uso</a>
             </article>
 
             <article class="main_footer_content_item">
                 <h2>Mais:</h2>
-                <a class="link transition radius active" title="Home" href="./">Home</a>
-                <a class="link transition radius" title="Sobre" href="?file=about">Sobre</a>
-                <a class="link transition radius" title="Blog" href="?file=blog">Blog</a>
-                <a class="link transition radius" title="Entrar" href="?file=auth-login">Entrar</a>
+                <a class="link transition radius active" title="Home" href="<?= url() ?>">Home</a>
+                <a class="link transition radius" title="Sobre" href="<?= url('/sobre') ?>">Sobre</a>
+                <a class="link transition radius" title="Blog" href="<?= url('/blog') ?>">Blog</a>
+                <a class="link transition radius" title="Entrar" href="<?= url('/login') ?>">Entrar</a>
             </article>
 
             <article class="main_footer_content_item">
@@ -83,9 +83,9 @@ endif; ?>
 
             <article class="main_footer_content_item social">
                 <h2>Social:</h2>
-                <a class="icon-facebook" href="#face" title="CafeControl no Facebook">/CafeControl</a>
-                <a class="icon-instagram" href="#insta" title="CafeControl no Instagram">@CafeControl</a>
-                <a class="icon-youtube" href="#yt" title="CafeControl no YouTube">/CafeControl</a>
+                <a target="_blank" class="icon-facebook" href="https://facebook.com/<?= CONF_SOCIAL_FACEBOOK_PAGE ?>" title="CafeControl no Facebook">/CafeControl</a>
+                <a target="_blank" class="icon-instagram" href="https://instagram.com/<?= CONF_SOCIAL_INSTAGRAM_PAGE ?>" title="CafeControl no Instagram">@CafeControl</a>
+                <a target="_blank" class="icon-youtube" href="https://youtube.com/<?= CONF_SOCIAL_INSTAGRAM_PAGE ?>" title="CafeControl no YouTube">/CafeControl</a>
             </article>
         </section>
     </div>
