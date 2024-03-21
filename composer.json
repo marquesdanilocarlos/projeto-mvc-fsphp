@@ -19,7 +19,8 @@
     },
     "files": [
       "source/Support/config.php",
-      "source/Support/helpers.php"
+      "source/Support/helpers.php",
+      "source/Support/minify.php"
     ]
   },
   "require": {
@@ -31,6 +32,7 @@
     "coffeecode/cropper": "^2.0",
     "coffeecode/optimizer": "^2.1",
     "coffeecode/paginator": "^2.0",
-    "coffeecode/router": "^2.0"
+    "coffeecode/router": "^2.0",
+    "matthiasmullie/minify": "^1.3"
   }
 }
