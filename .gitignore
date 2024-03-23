@@ -1,2 +1,4 @@
 .idea
-vendor
+vendor/
+themes/cafecontrol/assets/styles.css
+themes/cafecontrol/assets/scripts.js
