@@ -82,9 +82,11 @@ const CONF_IMG_QUALITY = ['jpg' => 75, 'png' => 5];
 /**
  * SITE
  */
-const CONF_SITE_NAME = 'FSPHP';
+const CONF_SITE_NAME = 'CaféControl';
 const CONF_SITE_LANG = 'pt_BR';
-const CONF_SITE_DOMAIN = 'fsphp.com.br';
+const CONF_SITE_DOMAIN = 'cafecontrol.com.br';
+const CONF_SITE_TITLE = 'Gerencie suas contas com o melhor café!';
+const CONF_SITE_DESC = 'Receber e pagar é uma tarefa comum do dia a dia, o CafeControl é um gerenciador de contas simples, fácil e gratuito para ajudar você nessa tarefa.';
 
 /**
  * SOCIAL

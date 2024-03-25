@@ -8,6 +8,7 @@
     <title>CafeControl - Gerencie suas contas com um bom café</title>
     <link rel="icon" type="image/png" href="<?= theme('assets/images/favicon.png') ?>"/>
     <link rel="stylesheet" href="<?= theme('assets/styles.css') ?>"/>
+    <?= $head ?? ''; ?>
 </head>
 <body>
 

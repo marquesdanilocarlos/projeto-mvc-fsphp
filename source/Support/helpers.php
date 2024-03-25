@@ -165,7 +165,14 @@ function url(?string $path = null): string
     }
 
     return CONF_URL_BASE;
+}
 
+/**
+ * @return string
+ */
+function url_back(): string
+{
+    return $_SERVER['HTTP_REFERER'] ?? url();
 }
 
 /**
