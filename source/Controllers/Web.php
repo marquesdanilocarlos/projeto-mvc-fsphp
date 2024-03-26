@@ -29,7 +29,31 @@ class Web extends Controller
 
     public function about()
     {
-        echo '<h1>SOBRE</h1>';
+        $head = $this->seo->render(
+           'Descubra o ' . CONF_SITE_NAME . ' - ' . CONF_SITE_DESC,
+            CONF_SITE_DESC,
+            url('/sobre'),
+            url('/assets/images/share.jpg')
+        );
+
+        echo $this->view->render('about', [
+            'head' => $head,
+            'video' => '1oL1TR4FiA4'
+        ]);
+    }
+
+    public function terms()
+    {
+        $head = $this->seo->render(
+           CONF_SITE_NAME . ' - Termos de uso',
+            CONF_SITE_DESC,
+            url('/termos'),
+            url('/assets/images/share.jpg')
+        );
+
+        echo $this->view->render('terms', [
+            'head' => $head
+        ]);
     }
 
     public function error(array $data): void

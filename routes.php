@@ -8,6 +8,7 @@ $router = new \CoffeeCode\Router\Router(url(), '@');
 $router->namespace('Source\Controllers');
 $router->get('/', 'Web@home');
 $router->get('/sobre', 'Web@about');
+$router->get('/termos', 'Web@terms');
 
 /* *
  * ERROR
