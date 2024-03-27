@@ -6,9 +6,9 @@
  */
 
 use Source\Core\Connection;
-use Source\Core\Message;
 use Source\Core\Session;
 use Source\Models\User;
+use Source\Support\Message;
 
 /**
  * @param string $email
