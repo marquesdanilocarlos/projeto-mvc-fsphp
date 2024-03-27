@@ -26,7 +26,7 @@
                 <a class="link transition radius active" title="Home" href="<?= url() ?>">Home</a>
                 <a class="link transition radius" title="Sobre" href="<?= url('/sobre') ?>">Sobre</a>
                 <a class="link transition radius" title="Blog" href="<?= url('/blog') ?>">Blog</a>
-                <a class="link login transition radius icon-sign-in" title="Entrar" href="<?= url('/login') ?>">Entrar</a>
+                <a class="link login transition radius icon-sign-in" title="Entrar" href="<?= url('/entrar') ?>">Entrar</a>
             </div>
         </nav>
     </div>
