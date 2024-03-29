@@ -8,7 +8,6 @@ $router = new \CoffeeCode\Router\Router(url(), '@');
 $router->namespace('Source\Controllers');
 $router->get('/', 'Web@home');
 $router->get('/sobre', 'Web@about');
-$router->get('/termos', 'Web@terms');
 
 //Blog
 $router->get('/blog', 'Web@blog');
@@ -18,6 +17,14 @@ $router->get('/blog/{postName}', 'Web@blogPost');
 $router->get('/entrar', 'Web@login');
 $router->get('/recuperar', 'Web@recover');
 $router->get('/cadastrar', 'Web@register');
+
+//opt
+$router->get('/confirma', 'Web@confirm');
+$router->get('/sucesso', 'Web@success');
+
+//Terms
+
+$router->get('/termos', 'Web@terms');
 
 /* *
  * ERROR
