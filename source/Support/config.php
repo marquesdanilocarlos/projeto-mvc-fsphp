@@ -50,6 +50,7 @@ const CONF_MAIL_PORT = 2025;
 const CONF_MAIL_USER = '';
 const CONF_MAIL_PASS = '';
 const CONF_MAIL_SENDER_EMAIL = 'marquesdanilocarlos@gmail.com';
+const CONF_MAIL_SUPPORT = 'marquesdanilocarlos@gmail.com';
 const CONF_MAIL_SENDER_NAME = 'Danilo';
 const CONF_MAIL_OPTION_LANG = 'br';
 const CONF_MAIL_OPTION_HTML = true;
@@ -98,4 +99,11 @@ const CONF_SOCIAL_FACEBOOK_AUTHOR = 'marquesdanilocarlos';
 const CONF_SOCIAL_FACEBOOK_PAGE = 'marquesdanilocarlos';
 const CONF_SOCIAL_INSTAGRAM_PAGE = 'marquesdanilocarlos';
 const CONF_SOCIAL_YOUTUBE_PAGE = 'marquesdanilocarlos';
+
+/**
+ * ERROR CONSTANTS
+ */
+
+const SERVICE_UNAVAILABLE_CODE = 503;
+const SERVICE_MAINTANCE_CODE = 530;
 

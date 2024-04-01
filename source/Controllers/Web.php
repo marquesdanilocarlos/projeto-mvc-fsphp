@@ -165,11 +165,33 @@ class Web extends Controller
     public function error(array $data): void
     {
         $error = new stdClass();
-        $error->code = $data['errcode'];
-        $error->title = "Ooops... Conteúdo indisponível! :/";
-        $error->message = "Sentimos muito, mas o conteúdo que você tentou acessar não existe, está indisponível no momento, ou foi removido.";
-        $error->linkTitle = "Continue navegando";
-        $error->link = url_back();
+
+        switch ($data['errcode']) {
+            case SERVICE_UNAVAILABLE_CODE:
+                $error->code = SERVICE_UNAVAILABLE_CODE;
+                $error->title = "Ooops... Estamos enfrentando problemas! :/";
+                $error->message = "Parece que nosse serviço não está disponível no momento. Já estamos analisando o problema, mas caso precise, envie um e-mail.";
+                $error->linkTitle = "Enviar e-mail!";
+                $error->link = 'mailto:' . CONF_MAIL_SUPPORT;
+                break;
+
+            case SERVICE_MAINTANCE_CODE:
+                $error->code = SERVICE_MAINTANCE_CODE;
+                $error->title = "Desculpe, estamos em manutenção.";
+                $error->message = "Voltamos logo! Por hora, estamos trabalhando para melhorar o nosso conteúdo.";
+                $error->linkTitle = null;
+                $error->link = null;
+                break;
+
+            default:
+                $error->code = $data['errcode'];
+                $error->title = "Ooops... Conteúdo indisponível! :/";
+                $error->message = "Sentimos muito, mas o conteúdo que você tentou acessar não existe, está indisponível no momento, ou foi removido.";
+                $error->linkTitle = "Continue navegando";
+                $error->link = url_back();
+        }
+
+
 
         $head = $this->seo->render(
             "{$error->code} | {$error->title}",

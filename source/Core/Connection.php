@@ -13,13 +13,13 @@ class Connection
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_OBJ,
         PDO::ATTR_CASE => PDO::CASE_NATURAL
     ];
-    private static PDO $instance;
+    private static ?PDO $instance = null;
 
     final private function __construct()
     {
     }
 
-    public static function getInstance(): PDO
+    public static function getInstance(): ?PDO
     {
         if (empty(self::$instance)) {
             try {
@@ -30,7 +30,7 @@ class Connection
                     self::OPTIONS
                 );
             } catch (PDOException) {
-                die("<h1>Ooops, erro ao conectar...</h1>");
+                redirect('/ooops/503');
             }
         }
 
