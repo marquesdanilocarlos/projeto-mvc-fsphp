@@ -13,6 +13,12 @@ abstract class Model
     protected ?PDOException $fail = null;
     protected ?Message $message;
 
+    protected string $query;
+    protected string $params;
+    protected string $order;
+    protected int $limit;
+    protected int $offset;
+
 
     public function __construct()
     {
@@ -85,11 +91,34 @@ abstract class Model
         return $this;
     }
 
-    public function fetch()
+    public function fetch(bool $all = false)
     {
-        
+        try {
+            $stmt = Connection::getInstance()->prepare($this->query . $this->order . $this->limit . $this->offset);
+            $stmt->execute($this->params);
+
+            if (!$stmt->rowCount()) {
+                return null;
+            }
+
+            if ($all) {
+                return $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
+            }
+
+            return $stmt->fetch(static::class);
+        } catch (PDOException $e) {
+            $this->fail = $e;
+            return null;
+        }
     }
-    
+
+    public function count(string $key = 'id'): int
+    {
+        $stmt = Connection::getInstance()->prepare($this->query);
+        $stmt->execute($this->params);
+        return $stmt->rowCount();
+    }
+
     protected function create(string $entity, array $data): ?int
     {
         try {
