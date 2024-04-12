@@ -67,6 +67,29 @@ abstract class Model
         return $this;
     }
 
+    public function order(string $columnOrder): self
+    {
+        $this->order = "ORDER BY {$columnOrder}";
+        return $this;
+    }
+
+    public function limit(int $limit): self
+    {
+        $this->limit = " LIMIT {$limit}";
+        return $this;
+    }
+
+    public function offset(int $offset): self
+    {
+        $this->offset = " OFFSET {$offset}";
+        return $this;
+    }
+
+    public function fetch()
+    {
+        
+    }
+    
     protected function create(string $entity, array $data): ?int
     {
         try {
