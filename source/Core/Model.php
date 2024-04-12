@@ -209,7 +209,7 @@ abstract class Model
     {
         $filtered = [];
         foreach ($data as $key => $value) {
-            $filtered[$key] = $value ? filter_var($value, FILTER_SANITIZE_SPECIAL_CHARS) : null;
+            $filtered[$key] = $value ? filter_var($value, FILTER_DEFAULT) : null;
         }
 
         return $filtered;
