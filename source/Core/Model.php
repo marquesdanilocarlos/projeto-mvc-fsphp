@@ -119,13 +119,13 @@ abstract class Model
         return $stmt->rowCount();
     }
 
-    protected function create(string $entity, array $data): ?int
+    protected function create(array $data): ?int
     {
         try {
             $columns = implode(", ", array_keys($data));
             $values = ":" . implode(", :", array_keys($data));
             $stmt = Connection::getInstance()->prepare(
-                "INSERT INTO {$entity} ({$columns}) VALUES ({$values})"
+                "INSERT INTO " . static::$entity . " ({$columns}) VALUES ({$values})"
             );
             $stmt->execute($this->filter($data));
 
@@ -160,7 +160,7 @@ abstract class Model
         }
     }
 
-    protected function update(string $entity, array $data, string $terms, string $params): ?int
+    protected function update(array $data, string $terms, string $params): ?int
     {
         try {
             $dataSet = [];
@@ -172,7 +172,7 @@ abstract class Model
             $dataSet = implode(", ", $dataSet);
             parse_str($params, $arrParams);
 
-            $stmt = Connection::getInstance()->prepare("UPDATE {$entity} SET {$dataSet} WHERE {$terms}");
+            $stmt = Connection::getInstance()->prepare("UPDATE " . static::$entity . " SET {$dataSet} WHERE {$terms}");
             $stmt->execute($this->filter(array_merge($data, $arrParams)));
 
             return $stmt->rowCount() ?? 1;
@@ -182,13 +182,14 @@ abstract class Model
         }
     }
 
-    protected function delete(string $entity, string $terms, string $params): ?int
+    protected function delete(string $key, string $value): ?bool
     {
         try {
-            $stmt = Connection::getInstance()->prepare("DELETE from {$entity} where {$terms}");
-            parse_str($params, $arrParams);
-            $stmt->execute($arrParams);
-            return $stmt->rowCount() ?? 1;
+            $stmt = Connection::getInstance()->prepare("DELETE from " . static::$entity . " where {$key} = :key");
+            $stmt->bindValue("key", $value, PDO::PARAM_STR);
+            $stmt->execute();
+
+            return true;
         } catch (PDOException $e) {
             $this->fail = $e;
             return null;
