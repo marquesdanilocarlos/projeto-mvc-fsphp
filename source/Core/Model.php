@@ -182,7 +182,7 @@ abstract class Model
         }
     }
 
-    protected function delete(string $key, string $value): ?bool
+    public function delete(string $key, string $value): bool
     {
         try {
             $stmt = Connection::getInstance()->prepare("DELETE from " . static::$entity . " where {$key} = :key");
@@ -192,7 +192,7 @@ abstract class Model
             return true;
         } catch (PDOException $e) {
             $this->fail = $e;
-            return null;
+            return false;
         }
     }
 
