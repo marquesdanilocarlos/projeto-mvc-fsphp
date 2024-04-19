@@ -13,11 +13,11 @@ abstract class Model
     protected ?PDOException $fail = null;
     protected ?Message $message;
 
-    protected string $query;
-    protected string $params;
-    protected string $order;
-    protected int $limit;
-    protected int $offset;
+    protected string $query = '';
+    protected array $params = [];
+    protected string $order = '';
+    protected int $limit = 0;
+    protected int $offset = 0;
 
 
     public function __construct()
@@ -94,8 +94,24 @@ abstract class Model
     public function fetch(bool $all = false)
     {
         try {
-            $stmt = Connection::getInstance()->prepare($this->query . $this->order . $this->limit . $this->offset);
+            $query = $this->query;
+
+            if ($this->order) {
+                $query .= $this->order;
+            }
+
+            if ($this->limit) {
+                $query .= $this->limit;
+            }
+
+            if ($this->offset) {
+                $query .= $this->offset;
+            }
+
+            $stmt = Connection::getInstance()->prepare($query);
             $stmt->execute($this->params);
+
+
 
             if (!$stmt->rowCount()) {
                 return null;
@@ -105,7 +121,7 @@ abstract class Model
                 return $stmt->fetchAll(PDO::FETCH_CLASS, static::class);
             }
 
-            return $stmt->fetch(static::class);
+            return $stmt->fetchObject(static::class);
         } catch (PDOException $e) {
             $this->fail = $e;
             return null;
