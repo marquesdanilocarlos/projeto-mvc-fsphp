@@ -16,8 +16,8 @@ abstract class Model
     protected string $query = '';
     protected array $params = [];
     protected string $order = '';
-    protected int $limit = 0;
-    protected int $offset = 0;
+    protected string $limit = '';
+    protected string $offset = '';
 
 
     public function __construct()
