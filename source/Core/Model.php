@@ -9,6 +9,10 @@ use \stdClass;
 
 abstract class Model
 {
+    protected static string $entity;
+    protected static array $protectedFields;
+    protected static array $requiredFields;
+
     protected ?stdClass $data;
     protected ?PDOException $fail = null;
     protected ?Message $message;
@@ -20,8 +24,12 @@ abstract class Model
     protected string $offset = '';
 
 
-    public function __construct()
+    public function __construct(string $entity, array $protectedFields, array $requiredFields)
     {
+        self::$entity = $entity;
+        self::$protectedFields = array_merge($protectedFields, ['created_at', "updated_at"]);
+        self::$requiredFields = $requiredFields;
+
         $this->message = new Message();
     }
 
@@ -73,9 +81,16 @@ abstract class Model
         return $this;
     }
 
+    public function findById(int $id, string $columns = "*"): ?self
+    {
+        $find = $this->find("id=:id", "id={$id}", $columns);
+
+        return $find->fetch();
+    }
+
     public function order(string $columnOrder): self
     {
-        $this->order = "ORDER BY {$columnOrder}";
+        $this->order = " ORDER BY {$columnOrder}";
         return $this;
     }
 
@@ -110,7 +125,6 @@ abstract class Model
 
             $stmt = Connection::getInstance()->prepare($query);
             $stmt->execute($this->params);
-
 
 
             if (!$stmt->rowCount()) {
@@ -215,10 +229,9 @@ abstract class Model
     protected function safe(): ?array
     {
         $safe = (array)$this->data;
-        foreach (static::$safe as $unset) {
+        foreach (static::$protectedFields as $unset) {
             unset($safe[$unset]);
         }
-
         return $safe;
     }
 
@@ -234,9 +247,9 @@ abstract class Model
 
     protected function required(): bool
     {
-        $data = (array)$this->getData();
-        foreach (static::$required as $required) {
-            if (empty($data[$required])) {
+        $data = (array)$this->data();
+        foreach (static::$requiredFields as $field) {
+            if (empty($data[$field])) {
                 return false;
             }
         }

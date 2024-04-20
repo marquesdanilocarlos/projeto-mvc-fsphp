@@ -1,11 +1,10 @@
 <?php
 
-namespace Source\Support;
+namespace Source\Core;
 
 use CoffeeCode\Uploader\File;
 use CoffeeCode\Uploader\Image;
 use CoffeeCode\Uploader\Media;
-use Source\Core\Message;
 use Source\Interface\UploadInterface;
 
 readonly class Upload implements UploadInterface

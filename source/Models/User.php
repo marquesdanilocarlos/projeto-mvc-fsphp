@@ -6,9 +6,10 @@ use Source\Core\Model;
 
 class User extends Model
 {
-    protected static array $safe = ["id", "created_at", "updated_at"];
-    protected static array $required = ["first_name", "last_name", "email", "password"];
-    protected static string $entity = "users";
+    public function __construct()
+    {
+        parent::__construct("users", ["id"], ["first_name", "last_name", "email", "password"]);
+    }
 
     public function bootstrap(
         string $firstName,
@@ -24,12 +25,6 @@ class User extends Model
         $this->document = $document;
 
         return $this;
-    }
-
-    public function findById(int $id, string $columns = "*"): ?self
-    {
-        $find = $this->find("id=:id", "id={$id}", $columns);
-        return $find->fetch();
     }
 
     public function findByEmail(string $email, string $columns = "*"): ?self
