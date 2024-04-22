@@ -3,7 +3,6 @@
 namespace Source\Controllers;
 
 use Source\Core\Controller;
-use Source\Models\Faq\Channel;
 use Source\Models\Faq\Question;
 use Source\Support\Pager;
 use stdClass;
