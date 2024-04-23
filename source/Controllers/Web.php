@@ -4,6 +4,7 @@ namespace Source\Controllers;
 
 use Source\Core\Controller;
 use Source\Models\Faq\Question;
+use Source\Models\Post;
 use Source\Support\Pager;
 use stdClass;
 
@@ -23,9 +24,16 @@ class Web extends Controller
             theme('/assets/images/share.jpg')
         );
 
+        $blogPosts = (new Post())
+            ->find()
+            ->order('post_at DESC')
+            ->limit(6)
+            ->fetch(true);
+
         echo $this->view->render('home', [
             'head' => $head,
-            'video' => '1oL1TR4FiA4'
+            'video' => '1oL1TR4FiA4',
+            'blogPosts' => $blogPosts,
         ]);
     }
 

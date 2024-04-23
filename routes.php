@@ -10,15 +10,20 @@ $router->get('/', 'Web@home');
 $router->get('/sobre', 'Web@about');
 
 //Blog
-$router->get('/blog', 'Web@blog');
-$router->get('/blog/{postName}', 'Web@blogPost');
+$router->group('/blog');
+$router->get('/', 'Web@blog');
+$router->get('/page/{page}', 'Web@blog');
+$router->get('/{uri}', 'Web@blogPost');
+$router->post('/buscar', 'Web@blogSearch');
+$router->post('/buscar/{terms}/{page}', 'Web@blogSearch');
 
 //Auth
+$router->group(null);
 $router->get('/entrar', 'Web@login');
 $router->get('/recuperar', 'Web@recover');
 $router->get('/cadastrar', 'Web@register');
 
-//opt
+//Opt
 $router->get('/confirma', 'Web@confirm');
 $router->get('/sucesso', 'Web@success');
 

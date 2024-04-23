@@ -1,14 +1,16 @@
 <?php
+
+use Source\Core\Connection;
+use Source\Core\Message;
+use Source\Core\Session;
+use Source\Models\User;
+use Source\Support\Thumb;
+
 /**
  * ####################
  * ###   VALIDATE   ###
  * ####################
  */
-
-use Source\Core\Connection;
-use Source\Core\Session;
-use Source\Models\User;
-use Source\Support\Message;
 
 /**
  * @param string $email
@@ -25,11 +27,8 @@ function isEmail(string $email): bool
  */
 function isPassword(string $password): bool
 {
-    if (password_get_info($password)['algo']) {
-        return true;
-    }
-
-    return mb_strlen($password) >= CONF_PASS_MIN_LENGTH && mb_strlen($password) <= CONF_PASS_MAX_LENGTH;
+    return password_get_info($password)['algo']
+        || (mb_strlen($password) >= CONF_PASS_MIN_LENGTH && mb_strlen($password) <= CONF_PASS_MAX_LENGTH);
 }
 
 
@@ -176,33 +175,6 @@ function url_back(): string
 }
 
 /**
- * @param string|null $path
- * @return string
- */
-function theme(string $path = null): string
-{
-    $completePath = $path && $path[0] === '/' ? mb_substr($path, 1) : $path;
-
-    if (strpos($_SERVER['HTTP_HOST'], '.local')) {
-        $themeUrl = CONF_URL_TEST . '/themes/' . CONF_VIEW_THEME;
-
-        if ($path) {
-            return "{$themeUrl}/{$completePath}";
-        }
-
-        return $themeUrl;
-    }
-
-    $themeUrl = CONF_URL_BASE . '/themes/' . CONF_VIEW_THEME;
-
-    if ($path) {
-        return "{$themeUrl}/{$completePath}";
-    }
-
-    return $themeUrl;
-}
-
-/**
  * @param string $url
  * @return void
  */
@@ -219,8 +191,6 @@ function redirect(string $url): void
         header("Location: {$location}");
         exit;
     }
-
-
 }
 
 
@@ -248,6 +218,17 @@ function session(): Session
     return new Session();
 }
 
+function flash(): ?string
+{
+    $session = new Session();
+
+    if ($flash = $session->flash()) {
+        echo $flash;
+    }
+
+    return null;
+}
+
 
 /**
  * ###############
@@ -272,6 +253,10 @@ function user(): User
  */
 function passwd(string $password): string
 {
+    if (!password_get_info($password)['algo']) {
+        return $password;
+    }
+
     return password_hash($password, CONF_PASS_ALGO, CONF_PASS_OPTION);
 }
 
@@ -333,4 +318,42 @@ function dateFormatBR(string $date = 'now'): string
 function dateFormatDefault(string $date = 'now'): string
 {
     return (new DateTime())->format(CONF_DATE_APP);
+}
+
+/**
+ * ####################
+ * ####   ASSETS   ####
+ * ####################
+ */
+
+/**
+ * @param string|null $path
+ * @return string
+ */
+function theme(string $path = null): string
+{
+    $completePath = $path && $path[0] === '/' ? mb_substr($path, 1) : $path;
+
+    if (strpos($_SERVER['HTTP_HOST'], '.local')) {
+        $themeUrl = CONF_URL_TEST . '/themes/' . CONF_VIEW_THEME;
+
+        if ($path) {
+            return "{$themeUrl}/{$completePath}";
+        }
+
+        return $themeUrl;
+    }
+
+    $themeUrl = CONF_URL_BASE . '/themes/' . CONF_VIEW_THEME;
+
+    if ($path) {
+        return "{$themeUrl}/{$completePath}";
+    }
+
+    return $themeUrl;
+}
+
+function image(string $image, int $width, int $height = null)
+{
+    return url() . '/' . (new Thumb())->make($image, $width, $height);
 }

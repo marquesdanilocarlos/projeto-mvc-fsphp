@@ -68,7 +68,7 @@ const CONF_VIEW_THEME = "cafeweb";
 /**
  * UPLOAD
  */
-const CONF_UPLOAD_DIR = '../storage';
+const CONF_UPLOAD_DIR = 'storage';
 const CONF_UPLOAD_IMG_DIR = 'image';
 const CONF_UPLOAD_FILE_DIR = 'file';
 const CONF_UPLOAD_MEDIA_DIR = 'media';
