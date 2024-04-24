@@ -86,18 +86,30 @@ class Web extends Controller
 
     public function blogPost(array $data): void
     {
-        $post = (new Post)
+        $blogPost = (new Post())->findByUri($data['uri']);
+
+        if (!$blogPost) {
+            redirect('/404');
+        }
+
+        $blogPost->views += 1;
+        $blogPost->save();
 
         $head = $this->seo->render(
-            'Post Name - ' . CONF_SITE_NAME,
-            'Post headline',
-            url("/blog/{$postName}"),
-            theme('/assets/images/share.jpg')
+            "{$blogPost->title} - " . CONF_SITE_NAME,
+            $blogPost->subtitle,
+            url("/blog/{$blogPost->uri}"),
+            image($blogPost->cover, 1200, 628)
         );
 
         echo $this->view->render('blog-post', [
             'head' => $head,
-            'data' => $this->seo->getData()
+            'blogPost' => $blogPost,
+            'relatedPosts' => (new Post())
+                ->find('category = :category AND id != :id', "category={$blogPost->category}&id={$blogPost->id}")
+                ->order("rand()")
+                ->limit(3)
+                ->fetch(true)
         ]);
     }
 
