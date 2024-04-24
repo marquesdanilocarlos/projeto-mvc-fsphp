@@ -67,18 +67,26 @@ class Web extends Controller
             theme('/assets/images/share.jpg')
         );
 
+        $blogPosts = (new Post())->find();
+
         $pager = new Pager(url('/blog/page/'));
-        $pager->pager(100, 10, $data['page'] ?? 1);
+        $pager->pager($blogPosts->count(), 9, $data['page'] ?? 1);
+
+        $blogPosts = $blogPosts
+            ->limit($pager->limit())
+            ->offset($pager->offset())
+            ->fetch(true);
 
         echo $this->view->render('blog', [
             'head' => $head,
-            'paginator' => $pager->render()
+            'paginator' => $pager->render(),
+            'blogPosts' => $blogPosts,
         ]);
     }
 
     public function blogPost(array $data): void
     {
-        $postName = $data['postName'];
+        $post = (new Post)
 
         $head = $this->seo->render(
             'Post Name - ' . CONF_SITE_NAME,
