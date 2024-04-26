@@ -26,11 +26,11 @@ const CONF_DATE_APP = "Y-m-d H:i:s";
 /**
  * MESSAGE
  */
-const CONF_MESSAGE_CLASS = 'trigger';
-const CONF_MESSAGE_INFO = 'info';
-const CONF_MESSAGE_SUCCESS = 'success';
-const CONF_MESSAGE_WARNING = 'warning';
-const CONF_MESSAGE_ERROR = 'error';
+const CONF_MESSAGE_CLASS = 'message';
+const CONF_MESSAGE_INFO = 'info icon-info';
+const CONF_MESSAGE_SUCCESS = 'success icon-check-square-o';
+const CONF_MESSAGE_WARNING = 'warning icon-warning';
+const CONF_MESSAGE_ERROR = 'error icon-warning';
 
 
 /**
