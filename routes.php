@@ -15,7 +15,7 @@ $router->get('/', 'Web@blog');
 $router->get('/page/{page}', 'Web@blog');
 $router->get('/{uri}', 'Web@blogPost');
 $router->post('/buscar', 'Web@blogSearch');
-$router->post('/buscar/{terms}/{page}', 'Web@blogSearch');
+$router->get('/buscar/{terms}/{page}', 'Web@blogSearch');
 
 //Auth
 $router->group(null);

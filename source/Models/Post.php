@@ -17,7 +17,7 @@ class Post extends Model
         $defaultParams = "post_status_id=" . PostStatus::POSTED;
 
         if ($terms) {
-            $defatultTerms .= "AND {$terms}";
+            $defatultTerms .= " AND {$terms}";
         }
 
         if ($params) {

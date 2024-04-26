@@ -113,6 +113,52 @@ class Web extends Controller
         ]);
     }
 
+    public function blogSearch(array $data): void
+    {
+        if (!empty($data['search'])) {
+            $search = filter_var($data['search'], FILTER_SANITIZE_SPECIAL_CHARS);
+            echo json_encode(['redirect' => url("/blog/buscar/{$search}/1")]);
+            return;
+        }
+
+        if (empty($data['terms'])) {
+            redirect('/blog');
+        }
+
+        $search = filter_var($data['terms'], FILTER_SANITIZE_SPECIAL_CHARS);
+        $page = filter_var($data['page']) >= 1 ? $data['page'] : 1;
+
+        $head = $this->seo->render(
+            "Pesquisa por {$search} - " . CONF_SITE_NAME,
+            "Confira os resultados de sua pesquisa por {$search}",
+            url("/blog/buscar/{$search}/{$page}"),
+            theme('/assets/images/share.jpg')
+        );
+
+        $blogPost = (new Post())->find("title LIKE :search OR subtitle LIKE :search", "search=%{$search}%");
+        $blogPostCount = $blogPost->count();
+
+        if (!$blogPostCount){
+            echo $this->view->render('blog', [
+               'head' => $head,
+               'title' => "PESQUISA POR: ",
+               'search' => $search
+            ]);
+            return;
+        }
+
+        $pager = new Pager(url("/blog/buscar/{$search}"));
+        $pager->pager($blogPostCount, 9, $page);
+
+        echo $this->view->render('blog', [
+            'head' => $head,
+            'title' => "PESQUISA POR: ",
+            'search' => $search,
+            'blogPosts' => $blogPost->limit($pager->limit())->offset($pager->offset())->fetch(true),
+            'paginator' => $pager->render()
+        ]);
+    }
+
     public function login(): void
     {
         $head = $this->seo->render(
