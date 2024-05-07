@@ -89,6 +89,12 @@ const CONF_SITE_DOMAIN = 'cafecontrol.com.br';
 const CONF_SITE_TITLE = 'Gerencie suas contas com o melhor café!';
 const CONF_SITE_DESC = 'Receber e pagar é uma tarefa comum do dia a dia, o CafeControl é um gerenciador de contas simples, fácil e gratuito para ajudar você nessa tarefa.';
 
+const CONF_SITE_ADDR_STREET = 'QA 13 MR Casa';
+const CONF_SITE_ADDR_NUMBER = '08';
+const CONF_SITE_ADDR_COMPLEMENT = 'Setor Sul';
+const CONF_SITE_ADDR_CITY = 'Planaltina de Goiás';
+const CONF_SITE_ADDR_STATE = 'GO';
+const CONF_SITE_ADDR_ZIPCODE = '73753-113';
 /**
  * SOCIAL
  */
