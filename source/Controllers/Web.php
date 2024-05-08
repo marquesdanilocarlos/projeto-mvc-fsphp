@@ -3,8 +3,10 @@
 namespace Source\Controllers;
 
 use Source\Core\Controller;
+use Source\Models\Auth;
 use Source\Models\Faq\Question;
 use Source\Models\Post;
+use Source\Models\User;
 use Source\Support\Pager;
 use stdClass;
 
@@ -138,11 +140,11 @@ class Web extends Controller
         $blogPost = (new Post())->find("title LIKE :search OR subtitle LIKE :search", "search=%{$search}%");
         $blogPostCount = $blogPost->count();
 
-        if (!$blogPostCount){
+        if (!$blogPostCount) {
             echo $this->view->render('blog', [
-               'head' => $head,
-               'title' => "PESQUISA POR: ",
-               'search' => $search
+                'head' => $head,
+                'title' => "PESQUISA POR: ",
+                'search' => $search
             ]);
             return;
         }
@@ -187,8 +189,41 @@ class Web extends Controller
         ]);
     }
 
-    public function register(): void
+    public function register(?array $data): void
     {
+        if (!empty($data['csrf_token'])) {
+            if (!csrfVerify($data)) {
+                $json['message'] = $this->message->error('Erro ao enviar, favor use o formulário correto')->render();
+                echo json_encode($json);
+                return;
+            }
+
+            if (in_array('', $data)) {
+                $json['message'] = $this->message->info('Informe seus dados corretamente')->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $auth = new Auth();
+            $user = new User();
+            $user->bootstrap(
+                $data['first_name'],
+                $data['last_name'],
+                $data['email'],
+                $data['password']
+            );
+
+            if (!$auth->register($user)){
+                $json['message'] = $auth->getMessage()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $json['redirect'] = url('/confirma');
+            echo json_encode($json);
+            return;
+        }
+
         $head = $this->seo->render(
             'Criar conta - ' . CONF_SITE_NAME,
             CONF_SITE_DESC,

@@ -3,6 +3,7 @@
 namespace Source\Core;
 
 use BadMethodCallException;
+use Source\Interface\MessageInterface;
 
 /**
  * @method Message success($message)
@@ -10,7 +11,7 @@ use BadMethodCallException;
  * @method Message warning($message)
  * @method Message info($message)
  */
-class Message
+class Message implements MessageInterface
 {
     private string $text = '';
     private string $type = '';

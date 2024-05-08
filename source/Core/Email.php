@@ -8,15 +8,14 @@ use Source\Interface\EmailInterface;
 
 class Email implements EmailInterface
 {
-    private PHPMailer $mail;
-    private Message $message;
+
 
     private array $data;
 
-    public function __construct(PHPMailer $mail, Message $message)
-    {
-        $this->mail = $mail;
-        $this->message = $message;
+    public function __construct(
+        private PHPMailer $mail = new PHPMailer(),
+        private Message $message = new Message()
+    ) {
         $this->data = [];
         $this->configMail();
     }

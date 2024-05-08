@@ -247,7 +247,7 @@ abstract class Model
 
     protected function required(): bool
     {
-        $data = (array)$this->data();
+        $data = (array)$this->getData();
         foreach (static::$requiredFields as $field) {
             if (empty($data[$field])) {
                 return false;
