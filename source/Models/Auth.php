@@ -2,10 +2,9 @@
 
 namespace Source\Models;
 
-use PHPMailer\PHPMailer\PHPMailer;
 use Source\Core\Email;
-use Source\Core\Message;
 use Source\Core\Model;
+use Source\Core\Session;
 use Source\Core\View;
 
 class Auth extends Model
@@ -35,6 +34,45 @@ class Auth extends Model
             "{$user->first_name} {$user->last_name}"
         );
         $email->send();
+        return true;
+    }
+
+    public function login(string $email, string $password, bool $save = false): bool
+    {
+        if (!isEmail($email)) {
+            $this->message->warning('O e-mail informado não é válido.');
+            return false;
+        }
+
+        setcookie('authEmail', null, time() - 3600, '/');
+
+        if ($save) {
+            setcookie('authEmail', $email, time() + 604800, '/');
+        }
+
+        if (!isPassword($password)) {
+            $this->message->warning('A senha informada não é válida.');
+            return false;
+        }
+
+        $user = (new User())->findByEmail($email);
+        if ($user) {
+            $this->message->error('O usuário informado não está cadastrado.');
+            return false;
+        }
+
+        if (passwdVerify($password, $user->password)){
+            $this->message->error('A senha informada não confere.');
+            return false;
+        }
+
+        if (passwdRehash($user->password)){
+            $user->password = $password;
+            $user->save();
+        }
+
+        (new Session())->set('authUser', $user->id);
+        $this->message->success('Login efetuado com sucesso!')->flash();
         return true;
     }
 }
