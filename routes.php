@@ -20,6 +20,7 @@ $router->get('/buscar/{terms}/{page}', 'Web@blogSearch');
 //Auth
 $router->group(null);
 $router->get('/entrar', 'Web@login');
+$router->post('/entrar', 'Web@login');
 
 $router->get('/cadastrar', 'Web@register');
 $router->post('/cadastrar', 'Web@register');
