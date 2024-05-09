@@ -14,6 +14,23 @@ class Auth extends Model
         parent::__construct('user', ['id'], ['email', 'password']);
     }
 
+    public static function user(): ?User
+    {
+        $session = new Session();
+
+        if (!$session->has('authUser')){
+            return null;
+        }
+
+        return (new User())->findById($session->authUser);
+    }
+
+    public static function logout(): void
+    {
+        $session = new Session();
+        $session->unset('authUser');
+    }
+
     public function register(User $user): bool
     {
         if (!$user->save()) {

@@ -64,6 +64,7 @@ const CONF_MAIL_OPTION_CHARSET = 'utf-8';
 const CONF_VIEW_PATH = __DIR__ . "/../../assets/views";
 const CONF_VIEW_EXT = "php";
 const CONF_VIEW_THEME = "cafeweb";
+const CONF_VIEW_APP = "cafeapp";
 
 /**
  * UPLOAD

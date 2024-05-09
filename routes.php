@@ -33,8 +33,14 @@ $router->get('/confirma', 'Web@confirm');
 $router->get('/obrigado/{email}', 'Web@success');
 
 //Terms
-
 $router->get('/termos', 'Web@terms');
+
+/**
+ * APP
+ */
+$router->group('/app');
+$router->get('/', 'App@home');
+$router->get('/sair', 'App@logout');
 
 /* *
  * ERROR
