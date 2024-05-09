@@ -96,6 +96,7 @@ class User extends Model
             return false;
         }
 
+        $this->password = passwd($this->password);
         $userId = $this->create($this->safe());
         if ($this->getFail()) {
             $this->message->error("Erro ao cadastrar, verifique os dados");

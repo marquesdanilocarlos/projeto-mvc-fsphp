@@ -253,7 +253,7 @@ function user(): User
  */
 function passwd(string $password): string
 {
-    if (!password_get_info($password)['algo']) {
+    if (!empty(password_get_info($password)['algo'])) {
         return $password;
     }
 

@@ -12,7 +12,7 @@
             <?= csrfInput(); ?>
             <label>
                 <div><span class="icon-envelope">Email:</span></div>
-                <input type="email" name="email" placeholder="Informe seu e-mail:" required/>
+                <input type="email" name="email" placeholder="Informe seu e-mail:" value="<?= $cookie ?? '' ?>" required/>
             </label>
 
             <label>
@@ -24,7 +24,7 @@
             </label>
 
             <label class="check">
-                <input type="checkbox" name="save"/>
+                <input type="checkbox" name="save" <?= !empty($cookie) ? 'checked' : ''; ?>/>
                 <span>Lembrar dados?</span>
             </label>
 

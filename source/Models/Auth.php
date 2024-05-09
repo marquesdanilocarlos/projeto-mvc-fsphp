@@ -44,7 +44,7 @@ class Auth extends Model
             return false;
         }
 
-        setcookie('authEmail', null, time() - 3600, '/');
+        setcookie('authEmail', '', time() - 3600, '/');
 
         if ($save) {
             setcookie('authEmail', $email, time() + 604800, '/');
@@ -56,12 +56,13 @@ class Auth extends Model
         }
 
         $user = (new User())->findByEmail($email);
-        if ($user) {
+
+        if (!$user) {
             $this->message->error('O usuário informado não está cadastrado.');
             return false;
         }
 
-        if (passwdVerify($password, $user->password)){
+        if (!passwdVerify($password, $user->password)){
             $this->message->error('A senha informada não confere.');
             return false;
         }
