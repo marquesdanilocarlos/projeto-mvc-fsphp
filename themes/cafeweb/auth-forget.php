@@ -1,4 +1,5 @@
-<?php $this->layout("_theme", ['head' => $head]); ?>
+<?php
+$this->layout("_theme", ['head' => $head]); ?>
 
 <article class="auth">
     <div class="auth_content container content">
@@ -7,13 +8,15 @@
             <p>Informe seu e-mail para receber um link de recuperação.</p>
         </header>
 
-        <form class="auth_form" action="" method="post" enctype="multipart/form-data">
+        <form class="auth_form" data-reset="true" action="<?= url('/recuperar') ?>" method="post" enctype="multipart/form-data">
+            <div class="ajax_response"><?= flash(); ?></div>
+            <?= csrfInput(); ?>
             <label>
                 <div class="unlock-alt">
                     <span class="icon-envelope">Email:</span>
                     <span><a title="Recuperar senha" href="<?= url("/entrar"); ?>">Voltar e entrar!</a></span>
                 </div>
-                <input type="email" name="email" placeholder="Informe seu e-mail:"/>
+                <input type="email" name="email" placeholder="Informe seu e-mail:" required/>
             </label>
 
             <button class="auth_form_btn transition gradient gradient-green gradient-hover">Recuperar</button>

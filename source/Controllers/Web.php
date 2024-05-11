@@ -204,8 +204,34 @@ class Web extends Controller
         ]);
     }
 
-    public function recover(): void
+    public function recover(?array $data): void
     {
+
+        if (!empty($data['csrf_token'])) {
+            if (!csrfVerify($data)) {
+                $json['message'] = $this->message->error('Erro ao enviar, favor use o formulário correto.')->render();
+                echo json_encode($json);
+                return;
+            }
+
+            if (empty($data['email'])) {
+                $json['message'] = $this->message->error('Informe o e-mail.')->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $auth = new Auth();
+            if (!$auth->recover($data['email'])) {
+                $json['message'] = $auth->getMessage()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $json['message'] = $this->message->success('Acesse seu e-mail para recuperar a senha.')->render();
+            echo json_encode($json);
+            return;
+        }
+
         $head = $this->seo->render(
             'Recuperar senha - ' . CONF_SITE_NAME,
             CONF_SITE_DESC,
