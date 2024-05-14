@@ -104,7 +104,7 @@ class Auth extends Model
         }
 
         $user->forget = md5(uniqid(rand(), true));
-        $user->safe();
+        $user->save();
 
         $view = new View(__DIR__ . '/../../views/email');
         $message = $view->render('forget', [
@@ -119,6 +119,38 @@ class Auth extends Model
             "{$user->first_name} {$user->last_name}"
         )->send();
 
+        return true;
+    }
+
+    public function reset(string $email, string $code, string $password, string $passwordRepeat): bool
+    {
+        $user = (new User())->findByEmail($email);
+
+        if (!$user) {
+            $this->message->warning('A conta para recuperação não foi encontrada.');
+            return false;
+        }
+
+        if ($user->forget != $code) {
+            $this->message->error('Desculpe, mas o código de verificação não é valido');
+            return false;
+        }
+
+        if (!isPassword($password)) {
+            $min = CONF_PASS_MIN_LENGTH;
+            $max = CONF_PASS_MAX_LENGTH;
+            $this->message->warning("Sua senha deve possuir {$min} e {$max} caracteres.");
+            return false;
+        }
+
+        if ($password != $passwordRepeat) {
+            $this->message->warning('As senhas informadas não conferem.');
+            return false;
+        }
+
+        $user->password = $password;
+        $user->forget = null;
+        $user->save();
         return true;
     }
 }

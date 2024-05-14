@@ -28,8 +28,8 @@ $router->post('/cadastrar', 'Web@register');
 $router->get('/recuperar', 'Web@recover');
 $router->post('/recuperar', 'Web@recover');
 
-$router->get('/recuperar/{code}', 'Web@recoverReset');
-$router->post('/recuperar/resetar', 'Web@recoverReset');
+$router->get('/recuperar/{code}', 'Web@reset');
+$router->post('/recuperar/resetar', 'Web@reset');
 
 
 //Opt

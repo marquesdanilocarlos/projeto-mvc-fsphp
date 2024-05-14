@@ -163,14 +163,14 @@ class Web extends Controller
 
     public function login(?array $data): void
     {
-        if (!empty($data['csrf_token'])){
-            if (!csrfVerify($data)){
+        if (!empty($data['csrf_token'])) {
+            if (!csrfVerify($data)) {
                 $json['message'] = $this->message->error('Erro ao enviar, favor use o formulário correto.')->render();
                 echo json_encode($json);
                 return;
             }
 
-            if (empty($data['email'] || empty($data['password']))){
+            if (empty($data['email'] || empty($data['password']))) {
                 $json['message'] = $this->message->warning('Informe o e-mail e senha.')->render();
                 echo json_encode($json);
                 return;
@@ -180,7 +180,7 @@ class Web extends Controller
             $auth = new Auth();
             $login = $auth->login($data['email'], $data['password'], $save);
 
-            if (!$login){
+            if (!$login) {
                 $json['message'] = $auth->getMessage()->render();
                 echo json_encode($json);
                 return;
@@ -206,7 +206,6 @@ class Web extends Controller
 
     public function recover(?array $data): void
     {
-
         if (!empty($data['csrf_token'])) {
             if (!csrfVerify($data)) {
                 $json['message'] = $this->message->error('Erro ao enviar, favor use o formulário correto.')->render();
@@ -241,6 +240,49 @@ class Web extends Controller
 
         echo $this->view->render('auth-forget', [
             'head' => $head,
+        ]);
+    }
+
+    public function reset(array $data): void
+    {
+        if (!empty($data['csrf_token'])) {
+            if (!csrfVerify($data)) {
+                $json['message'] = $this->message->error('Erro ao enviar, favor use o formulário correto.')->render();
+                echo json_encode($json);
+                return;
+            }
+
+            if (empty($data['password'] || empty($data['password_repeat']))) {
+                $json['message'] = $this->message->warning('Informe e repita a senha para continuar')->render();
+                echo json_encode($json);
+                return;
+            }
+
+            list($email, $code) = explode('|', $data['code']);
+            $auth = new Auth();
+
+            if (!$auth->reset($email, $code, $data['password'], $data['password_repeat'])) {
+                $json['message'] = $auth->getMessage()->render();
+                echo json_encode($json);
+                return;
+            }
+
+            $this->message->success('Senha alterada com sucesso!')->flash();
+            $json['redirect'] = url('/entrar');
+            echo json_encode($json);
+            return;
+        }
+
+        $head = $this->seo->render(
+            'Crie sua nova senha no ' . CONF_SITE_NAME,
+            CONF_SITE_DESC,
+            url('/recuperar'),
+            theme('/assets/images/share.jpg')
+        );
+
+        echo $this->view->render('auth-reset', [
+            'head' => $head,
+            'code' => $data['code']
         ]);
     }
 
