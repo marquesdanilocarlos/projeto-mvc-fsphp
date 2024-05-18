@@ -81,7 +81,9 @@ $this->layout('_theme', ['head' => $head]); ?>
             <div class="home_optin_content_flex">
                 <span class="icon icon-check-square-o icon-notext"></span>
                 <h4>Crie sua conta gratuitamente:</h4>
-                <form action="<?= url('/cadastro') ?>" method="post" enctype="multipart/form-data">
+                <form action="<?= url('/cadastrar') ?>" method="post" enctype="multipart/form-data">
+                    <div class="ajax_response"><?= flash(); ?></div>
+                    <?= csrfInput(); ?>
                     <input type="text" name="first_name" placeholder="Primeiro nome:"/>
                     <input type="text" name="last_name" placeholder="Último nome:"/>
                     <input type="email" name="email" placeholder="Melhor e-mail:"/>

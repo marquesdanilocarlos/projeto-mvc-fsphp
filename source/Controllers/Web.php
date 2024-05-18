@@ -137,7 +137,7 @@ class Web extends Controller
             theme('/assets/images/share.jpg')
         );
 
-        $blogPost = (new Post())->find("title LIKE :search OR subtitle LIKE :search", "search=%{$search}%");
+        $blogPost = (new Post())->find("MATCH(title, subtitle) AGAINST(:search)", "search={$search}");
         $blogPostCount = $blogPost->count();
 
         if (!$blogPostCount) {
