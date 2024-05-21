@@ -6,13 +6,18 @@ use Source\Core\Model;
 
 class Post extends Model
 {
-    public function __construct()
-    {
+    public function __construct(
+        private bool $all = false
+    ) {
         parent::__construct('posts', ['id'], ['title', 'id', 'subtitle', 'content', 'post_status_id']);
     }
 
     public function find(?string $terms = null, ?string $params = null, string $columns = '*'): Model
     {
+        if ($this->all) {
+            return parent::find($terms, $params, $columns);
+        }
+
         $defatultTerms = 'post_status_id = :post_status_id AND post_at <= NOW()';
         $defaultParams = "post_status_id=" . PostStatus::POSTED;
 
@@ -23,7 +28,6 @@ class Post extends Model
         if ($params) {
             $defaultParams .= "&{$params}";
         }
-
 
         return parent::find($defatultTerms, $defaultParams, $columns);
     }
