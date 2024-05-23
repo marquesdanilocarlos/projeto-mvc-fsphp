@@ -16,6 +16,9 @@ $router->get('/page/{page}', 'Web@blog');
 $router->get('/{uri}', 'Web@blogPost');
 $router->post('/buscar', 'Web@blogSearch');
 $router->get('/buscar/{terms}/{page}', 'Web@blogSearch');
+$router->get('/categoria/{category}/', 'Web@blogCategory');
+$router->get('/categoria/{category}/{page}', 'Web@blogCategory');
+
 
 //Auth
 $router->group(null);

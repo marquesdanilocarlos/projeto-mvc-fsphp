@@ -47,7 +47,7 @@ class Post extends Model
             return null;
         }
 
-        return (new Category())->findById($this->author);
+        return (new Category())->findById($this->category);
     }
 
     public function findByUri(string $uri, string $columns = '*'): ?self

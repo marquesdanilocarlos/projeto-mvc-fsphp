@@ -5,7 +5,9 @@
     </a>
     <header>
         <p class="meta">
-            <?= $blogPost->getCategory()->title; ?> &bull;
+            <a title="Artigos em <?= $blogPost->getCategory()->title; ?>" href="<?= url("/blog/categoria/{$blogPost->getCategory()->uri}") ?>">
+                <?= $blogPost->getCategory()->title; ?>
+            </a> &bull;
             Por <?= "{$blogPost->getAuthor()->first_name} {$blogPost->getAuthor()->last_name};" ?> &bull;
             <?= dateFormatBR($blogPost->post_at) ?>
         </p>
