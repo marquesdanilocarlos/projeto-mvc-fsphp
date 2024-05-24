@@ -4,7 +4,7 @@ namespace Source\Interface;
 
 interface EmailInterface
 {
-    public function bootstrap(string $subject, string $message, string $toEmail, string $toName);
+    public function bootstrap(string $subject, string $body, string $recipient, string $recipientName);
 
     public function getMail();
 
@@ -12,5 +12,5 @@ interface EmailInterface
 
     public function attach(string $filePath, string $fileName);
 
-    public function send($fromEmail = CONF_MAIL_SENDER_EMAIL, $fromName = CONF_MAIL_SENDER_NAME);
+    public function send(string $from = CONF_MAIL_SENDER_EMAIL, string $fromName = CONF_MAIL_SENDER_NAME);
 }

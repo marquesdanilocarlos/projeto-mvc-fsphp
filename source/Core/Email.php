@@ -8,8 +8,6 @@ use Source\Interface\EmailInterface;
 
 class Email implements EmailInterface
 {
-
-
     private array $data;
 
     public function __construct(
@@ -20,12 +18,12 @@ class Email implements EmailInterface
         $this->configMail();
     }
 
-    public function bootstrap(string $subject, string $message, string $toEmail, string $toName): self
+    public function bootstrap(string $subject, string $body, string $recipient, string $recipientName): self
     {
         $this->data['subject'] = $subject;
-        $this->data['message'] = $message;
-        $this->data['toEmail'] = $toEmail;
-        $this->data['toName'] = $toName;
+        $this->data['message'] = $body;
+        $this->data['recipientEmail'] = $recipient;
+        $this->data['recipientName'] = $recipientName;
         $this->data['attachments'] = [];
 
         return $this;
@@ -41,28 +39,28 @@ class Email implements EmailInterface
         return $this->message;
     }
 
-    public function send($fromEmail = CONF_MAIL_SENDER_EMAIL, $fromName = CONF_MAIL_SENDER_NAME): bool
+    public function send(string $from = CONF_MAIL_SENDER_EMAIL, string $fromName = CONF_MAIL_SENDER_NAME): bool
     {
         if (empty($this->data)) {
             $this->message->error('Erro ao enviar, favor, verifique os dados.');
             return false;
         }
 
-        if (!isEmail($this->data['toEmail'])) {
+        if (!isEmail($this->data['recipientEmail'])) {
             $this->message->error('E-mail de destinatário inválido.');
             return false;
         }
 
-        if (!isEmail($fromEmail)) {
+        if (!isEmail($from)) {
             $this->message->error('E-mail de remetente inválido.');
             return false;
         }
 
         try {
             $this->mail->Subject = $this->data['subject'];
-            $this->mail->msgHTML($this->data['message']);
-            $this->mail->addAddress($this->data['toEmail'], $this->data['toName']);
-            $this->mail->setFrom($fromEmail, $fromName);
+            $this->mail->msgHTML($this->data['body']);
+            $this->mail->addAddress($this->data['recipientEmail'], $this->data['recipientName']);
+            $this->mail->setFrom($from, $fromName);
 
             foreach ($this->data['attachments'] as $filePath => $fileName) {
                 $this->mail->addAttachment($filePath, $fileName);
