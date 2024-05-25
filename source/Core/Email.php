@@ -3,6 +3,8 @@
 namespace Source\Core;
 
 use Exception;
+use PDO;
+use PDOException;
 use PHPMailer\PHPMailer\PHPMailer;
 use Source\Interface\EmailInterface;
 
@@ -21,7 +23,7 @@ class Email implements EmailInterface
     public function bootstrap(string $subject, string $body, string $recipient, string $recipientName): self
     {
         $this->data['subject'] = $subject;
-        $this->data['message'] = $body;
+        $this->data['body'] = $body;
         $this->data['recipientEmail'] = $recipient;
         $this->data['recipientName'] = $recipientName;
         $this->data['attachments'] = [];
@@ -72,6 +74,53 @@ class Email implements EmailInterface
             $this->message->error($e->getMessage());
             return false;
         }
+    }
+
+    public function queue(string $from = CONF_MAIL_SENDER_EMAIL, string $fromName = CONF_MAIL_SENDER_NAME): bool
+    {
+        try {
+            $stmt = Connection::getInstance()->prepare(
+                "INSERT INTO mail_queue (subject, body, from_email, from_name, recipient_email, recipient_name)
+                       VALUES (:subject, :body, :from_email, :from_name, :recipient_email, :recipient_name)"
+            );
+            $stmt->bindValue(":subject", $this->data['subject'], PDO::PARAM_STR);
+            $stmt->bindValue(":body", $this->data['body'], PDO::PARAM_STR);
+            $stmt->bindValue(":from_email", $from, PDO::PARAM_STR);
+            $stmt->bindValue(":from_name", $fromName, PDO::PARAM_STR);
+            $stmt->bindValue(":recipient_email", $this->data['recipientEmail'], PDO::PARAM_STR);
+            $stmt->bindValue(":recipient_name", $this->data['recipientName'], PDO::PARAM_STR);
+
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            $this->message->error($e->getMessage());
+            return false;
+        }
+    }
+
+    public function sendQueue(int $perSecond = 5): bool
+    {
+        $stmt = Connection::getInstance()->query("SELECT * FROM mail_queue WHERE sent_at IS NULL");
+
+        if (!$stmt->rowCount()) {
+            return false;
+        }
+
+        foreach ($stmt->fetchAll() as $send) {
+            $email = $this->bootstrap(
+                $send->subject,
+                $send->body,
+                $send->recipient_email,
+                $send->recipient_name,
+            );
+
+            if ($email->send($send->from_email, $send->from_name)) {
+                usleep(1000000 / $perSecond);
+                Connection::getInstance()->exec("UPDATE mail_queue SET sent_at = NOW() WHERE id = {$send->id}");
+            }
+        }
+
+        return true;
     }
 
     public function attach(string $filePath, string $fileName): self
