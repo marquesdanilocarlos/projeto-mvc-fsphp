@@ -16,6 +16,9 @@ class Message implements MessageInterface
     private string $text = '';
     private string $type = '';
 
+    private string $before = '';
+    private string $after = '';
+
     private array $allowedMethods = [
         'success' => CONF_MESSAGE_SUCCESS,
         'error' => CONF_MESSAGE_ERROR,
@@ -39,7 +42,7 @@ class Message implements MessageInterface
 
     public function getText(): string
     {
-        return $this->text;
+        return "{$this->before}{$this->text}{$this->after}";
     }
 
     public function getType(): string
@@ -73,4 +76,18 @@ class Message implements MessageInterface
     {
         return filter_var($message, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
     }
+
+    public function setBefore(string $before): self
+    {
+        $this->before = $before;
+        return $this;
+    }
+
+    public function setAfter(string $after): self
+    {
+        $this->after = $after;
+        return $this;
+    }
+
+
 }
