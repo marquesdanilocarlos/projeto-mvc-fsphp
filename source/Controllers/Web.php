@@ -8,6 +8,7 @@ use Source\Models\Category;
 use Source\Models\Faq\Question;
 use Source\Models\Post;
 use Source\Models\Report\Access;
+use Source\Models\Report\Online;
 use Source\Models\User;
 use Source\Support\Pager;
 use stdClass;
@@ -18,6 +19,7 @@ class Web extends Controller
     {
         parent::__construct(__DIR__ . "/../../themes/" . CONF_VIEW_THEME . "/");
         (new Access())->report();
+        (new Online())->report();
     }
 
     public function home(): void
