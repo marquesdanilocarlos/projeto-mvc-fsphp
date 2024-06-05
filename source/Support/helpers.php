@@ -253,6 +253,18 @@ function requestLimit(string $key, int $limit = 5, int $seconds = 60): bool
     return false;
 }
 
+function requestRepeat(string $field, string $value): bool
+{
+    $session = new Session();
+
+    if ($session->has($field) && $session->{$field} == $value) {
+        return true;
+    }
+
+    $session->set($field, $value);
+    return false;
+}
+
 
 /**
  * ###############
