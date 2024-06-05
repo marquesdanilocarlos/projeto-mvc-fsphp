@@ -210,6 +210,12 @@ class Web extends Controller
                 return;
             }
 
+            if (requestLimit('weblogin')) {
+                $json['message'] = $this->message->error("Limite de requisições extrapolado. Aguarde alguns minutos para tentar novamente.")->render();
+                echo json_encode($json);
+                return;
+            }
+
             if (empty($data['email'] || empty($data['password']))) {
                 $json['message'] = $this->message->warning('Informe o e-mail e senha.')->render();
                 echo json_encode($json);
