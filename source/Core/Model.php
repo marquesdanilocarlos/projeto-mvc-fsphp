@@ -212,11 +212,17 @@ abstract class Model
         }
     }
 
-    public function delete(string $key, string $value): bool
+    public function delete(string $terms, ?string $params): bool
     {
         try {
-            $stmt = Connection::getInstance()->prepare("DELETE from " . static::$entity . " where {$key} = :key");
-            $stmt->bindValue("key", $value, PDO::PARAM_STR);
+            $stmt = Connection::getInstance()->prepare("DELETE from " . static::$entity . " where {$terms}");
+
+            if ($params) {
+                parse_str($params, $params);
+                $stmt->execute($params);
+                return true;
+            }
+
             $stmt->execute();
 
             return true;
@@ -224,6 +230,16 @@ abstract class Model
             $this->fail = $e;
             return false;
         }
+    }
+
+    public function destroy(): bool
+    {
+        if (empty($this->id)) {
+            return false;
+        }
+
+        $destroy = $this->delete("id = :id", "id={$this->id}");
+        return $destroy;
     }
 
     protected function safe(): ?array

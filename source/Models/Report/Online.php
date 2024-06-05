@@ -24,7 +24,7 @@ class Online extends Model
         return $online->fetch(true);
     }
 
-    public function report(): self
+    public function report(bool $clear = true): self
     {
         $session = new Session();
 
@@ -39,7 +39,29 @@ class Online extends Model
             return $this;
         }
 
+        $onlineUser = $this->findById($session->online);
+
+        if (!$onlineUser) {
+            $session->unset('online');
+            return $this;
+        }
+
+        $onlineUser->user = $session->authUser ?? null;
+        $onlineUser->url = filter_input(INPUT_GET, 'route', FILTER_SANITIZE_SPECIAL_CHARS) ?? '/';
+        $onlineUser->pages += 1;
+        $onlineUser->save();
+
+        if ($clear) {
+            $this->clear();
+        }
+
         return $this;
+    }
+
+
+    public function clear(): void
+    {
+        $this->delete("updated_at <= NOW() - INTERVAL {$this->sessionTime} MINUTE", null);
     }
 
     public function save(): bool
